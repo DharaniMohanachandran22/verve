@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "enabled": true,
+  "name": "swagger",
+  "description": "Ensure all NestJS controllers and DTOs include Swagger decorators for API documentation.",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.controller.ts",
+      "**/*.dto.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "For every controller:\n\n1. Add @ApiTags('<module-name>') at the top of the controller\n\n2. For each endpoint:\n   - Add @ApiOperation({ summary: 'Short description of the endpoint' })\n   - Add @ApiResponse({ status: 200, description: 'Success response' })\n   - Add @ApiResponse({ status: 400, description: 'Bad request' })\n\n3. For POST/PATCH endpoints:\n   - Add @ApiBody({ type: <DtoName> })\n\nFor every DTO:\n\n4. Add @ApiProperty() to all fields\n\n5. Ensure proper examples:\n   - @ApiProperty({ example: 'Sample value' })\n\n6. Use consistent response structure:\n   {\n     success: boolean;\n     data: any;\n     message: string;\n   }"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "enabled": true,
+  "name": "nestjs-naming-convention",
+  "description": "Ensure consistent file naming conventions for NestJS modules, services, and DTOs.",
+  "when": {
+    "type": "fileCreated",
+    "patterns": [
+      "**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Enforce the following naming conventions:\n\n1. DTO files must end with:\n   - *.dto.ts\n   Example: create-ticket.dto.ts\n\n2. Service files must end with:\n   - *.service.ts\n   Example: ticket.service.ts\n\n3. Controller files must end with:\n   - *.controller.ts\n\n4. Module files must end with:\n   - *.module.ts\n\n5. File names must be lowercase and use hyphen-case\n   Example: ticket-comment.service.ts\n\n6. Class names:\n   - DTO → PascalCase + Dto (CreateTicketDto)\n   - Service → PascalCase + Service (TicketService)"
+  }
+}

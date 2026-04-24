@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "enabled": true,
+  "name": "command-suggestion-enforcement",
+  "description": "Ensure all generated development steps include required terminal commands for execution.",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "For every generated solution:\n\n1. Always include required terminal commands to execute the solution\n\n2. Commands must be clearly separated in code blocks\n\n3. Include commands for:\n   - Installing dependencies\n   - Running the application\n   - Creating modules (NestJS CLI)\n   - Database setup (if needed)\n\n4. Example formats:\n\n- Install:\n  npm install <package>\n\n- Run:\n  npm run start:dev\n\n- Generate module:\n  nest g module <name>\n\n5. Do not assume commands are already known\n\n6. Provide commands even for small setup steps"
+  }
+}
