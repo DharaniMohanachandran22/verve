@@ -47,7 +47,8 @@ Verve follows a modern distributed architecture, separating the concerns of pres
 
 Detailed documentation is available in the [`docs/`](./docs) directory:
 
-- [**Architecture Overview**](./docs/ARCHITECTURE.md): Deep dive into the tech stack and system design.
+- [**User Guide**](./docs/USER_GUIDE.md): Purpose, roles, and a step-by-step usage guide.
+- [**Architecture Overview**](./docs/ARCHITECTURE.md): Deep dive into the tech stack and system design (includes visual flows).
 - [**API Specification**](./docs/API_SPECIFICATION.md): Detailed API endpoint documentation.
 - [**Setup Guide**](./docs/SETUP_GUIDE.md): Comprehensive environment and local setup instructions.
 - [**Development Workflow**](./docs/DEVELOPMENT_WORKFLOW.md): Git standards, code style, and contribution guide.
