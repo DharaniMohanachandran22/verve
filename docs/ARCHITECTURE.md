@@ -33,8 +33,8 @@ graph TD
     D --> K[Access Existing Board]
     E --> F[Board Workspace]
     K --> L{Role?}
-    L -- Owner/Member -->> F
-    L -- Viewer -->> M[Read-Only Workspace]
+    L -- "Owner / Member" --> F
+    L -- "Viewer" --> M
     F --> G[Add Lists & Cards]
     G --> H[Invite Collaborators]
     H --> I[Task Collaboration]
