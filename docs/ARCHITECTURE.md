@@ -1,5 +1,43 @@
 # System Architecture
 
+## Visual Overview
+
+### 🖥️ System Interaction Flow
+This diagram illustrates the request-response lifecycle between the client, server, and database.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Client as Next.js Frontend
+    participant Server as NestJS Backend
+    participant DB as MongoDB
+
+    User->>Client: Interactive Action (e.g., Move Card)
+    Client->>Server: HTTP Request (JWT in Header)
+    Server->>Server: Validate JWT (AuthGuard)
+    Server->>DB: Query / Update Data
+    DB-->>Server: Data Confirmation
+    Server-->>Client: JSON Response (State Update)
+    Client-->>User: Reflect Change (UI Update)
+```
+
+### 🛣️ User Journey Flow
+The standard progression of a user through the Verve application.
+
+```mermaid
+graph TD
+    A[Public Landing] --> B{Auth?}
+    B -- No --> C[Register / Login]
+    B -- Yes --> D[Main Dashboard]
+    D --> E[Create New Board]
+    E --> F[Board Workspace]
+    F --> G[Add Lists & Cards]
+    G --> H[Invite Collaborators]
+    H --> I[Task Collaboration]
+    I --> J[Notifications & Updates]
+    J --> I
+```
+
 ## Overview
 Verve is a full-stack Kanban application designed with a decoupled architecture. It provides a real-time-like experience for task management, leveraging modern web technologies to ensure responsiveness and scalability.
 
