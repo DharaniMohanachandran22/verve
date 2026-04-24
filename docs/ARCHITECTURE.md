@@ -22,7 +22,7 @@ sequenceDiagram
 ```
 
 ### 🛣️ User Journey Flow
-The standard progression of a user through the Verve application.
+The standard progression of a user through the Verve application, showing role-based branching.
 
 ```mermaid
 graph TD
@@ -30,12 +30,17 @@ graph TD
     B -- No --> C[Register / Login]
     B -- Yes --> D[Main Dashboard]
     D --> E[Create New Board]
+    D --> K[Access Existing Board]
     E --> F[Board Workspace]
+    K --> L{Role?}
+    L -- Owner/Member -->> F
+    L -- Viewer -->> M[Read-Only Workspace]
     F --> G[Add Lists & Cards]
     G --> H[Invite Collaborators]
     H --> I[Task Collaboration]
     I --> J[Notifications & Updates]
     J --> I
+    M --> J
 ```
 
 ## Overview

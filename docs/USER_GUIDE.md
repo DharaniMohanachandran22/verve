@@ -22,6 +22,11 @@ Verve uses a simple but effective role-based system to ensure data integrity and
 - **Movement**: Can move cards between lists to reflect progress.
 - **Interaction**: Can participate in discussions via the card comments system.
 
+### 3. Board Viewer
+- **Read-Only Access**: Can view boards, lists, and cards to track progress.
+- **Transparency**: Can see comments and activity but cannot add or edit any content.
+- **Stakeholder Focus**: Designed for managers or stakeholders who need visibility without direct interaction.
+
 ---
 
 ## 🛠️ Core Features
