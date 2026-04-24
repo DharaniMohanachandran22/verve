@@ -1,119 +1,65 @@
-# Trello Ticket System - Backend
+# Verve Backend (Server)
 
-NestJS backend for a Trello-like ticket management system with MongoDB and JWT authentication.
+The backend for Verve is a robust, modular REST API built with NestJS 11. It provides secure authentication, real-time-like data management, and integration with MongoDB.
 
-## Prerequisites
+---
 
-- Node.js 18+ and npm
-- MongoDB 7.x running locally or accessible via connection string
-- Git
+## 🛠️ Technology Stack
+- **Framework**: [NestJS 11](https://nestjs.com/)
+- **Database**: [MongoDB](https://www.mongodb.com/) with [Mongoose](https://mongoosejs.com/)
+- **Auth**: [Passport.js](https://www.passportjs.org/) & [JWT](https://jwt.io/)
+- **Email**: [Nodemailer](https://nodemailer.com/)
 
-## Installation
+## 📁 Project Structure
 
-1. Install dependencies:
-```bash
-npm install
+```text
+server/
+├── src/
+│   ├── auth/           # JWT strategy and auth logic
+│   ├── boards/         # Kanban board management
+│   ├── lists/          # Vertical list modules
+│   ├── cards/          # Task card logic
+│   ├── mail/           # Email service integration
+│   ├── notifications/  # User notification system
+│   └── users/          # User profile and account logic
+├── test/               # E2E and unit tests
+└── uploads/            # Local storage for file uploads
 ```
 
-2. Install additional required dependencies:
-```bash
-npm install @nestjs/jwt @nestjs/passport passport passport-jwt bcrypt cookie-parser @nestjs/config
-npm install --save-dev @types/bcrypt @types/passport-jwt @types/cookie-parser
-```
+## 🚀 Getting Started
 
-3. Copy the environment file and configure:
-```bash
-cp .env.example .env
-```
+### Prerequisites
+- Node.js v18+
+- MongoDB instance (Local or Atlas)
 
-Edit `.env` and update the values:
-- `MONGODB_URI`: Your MongoDB connection string
-- `JWT_SECRET`: A secure random string for JWT signing
-- `PORT`: Backend server port (default: 3001)
-- `FRONTEND_URL`: Frontend URL for CORS (default: http://localhost:3000)
+### Installation
+1.  Navigate to the `server` directory:
+    ```bash
+    cd server
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Configure Environment Variables:
+    Create a `.env` file from `.env.example`:
+    ```env
+    MONGODB_URI=mongodb://localhost:27017/verve
+    JWT_SECRET=your_secret_key
+    PORT=3001
+    ```
+4.  Run the development server:
+    ```bash
+    npm run start:dev
+    ```
 
-## Running the Application
+## 📜 Available Scripts
+- `npm run start:dev`: Starts the server in watch mode.
+- `npm run build`: Compiles the application for production.
+- `npm run test`: Runs unit tests.
+- `npm run test:e2e`: Runs end-to-end tests.
 
-### Development Mode
-```bash
-npm run start:dev
-```
+---
 
-### Production Mode
-```bash
-npm run build
-npm run start:prod
-```
-
-## API Documentation
-
-Once the server is running, visit:
-- API Docs: http://localhost:3001/api
-
-## Project Structure
-
-```
-src/
-├── common/              # Shared utilities
-│   ├── filters/        # Exception filters
-│   ├── pipes/          # Validation pipes
-│   └── exceptions/     # Custom exceptions
-├── auth/               # Authentication module (to be implemented)
-├── users/              # Users module (to be implemented)
-├── boards/             # Boards module
-├── lists/              # Lists module (to be implemented)
-├── cards/              # Cards module (to be implemented)
-├── app.module.ts       # Root module
-└── main.ts             # Application entry point
-```
-
-## Features
-
-- ✅ NestJS 11.x with TypeScript
-- ✅ MongoDB integration with Mongoose
-- ✅ Global validation pipe with class-validator
-- ✅ Global exception filter for consistent error handling
-- ✅ CORS configuration for frontend integration
-- ✅ Environment variable configuration
-- ✅ Swagger/OpenAPI documentation
-- ✅ Custom exception classes
-- ✅ ObjectId validation pipe
-- 🔄 JWT authentication (to be implemented)
-- 🔄 Role-based access control (to be implemented)
-
-## Testing
-
-```bash
-# Unit tests
-npm run test
-
-# E2E tests
-npm run test:e2e
-
-# Test coverage
-npm run test:cov
-```
-
-## Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| MONGODB_URI | MongoDB connection string | mongodb://localhost:27017/trello |
-| JWT_SECRET | Secret key for JWT signing | (required) |
-| JWT_EXPIRES_IN | JWT token expiration | 7d |
-| PORT | Server port | 3001 |
-| FRONTEND_URL | Frontend URL for CORS | http://localhost:3000 |
-| MAX_FILE_SIZE | Maximum file upload size in bytes | 10485760 (10MB) |
-| UPLOAD_DIR | Directory for file uploads | ./uploads |
-
-## Next Steps
-
-1. Install the required dependencies listed above
-2. Ensure MongoDB is running
-3. Configure the `.env` file
-4. Run `npm run start:dev` to start the development server
-5. Visit http://localhost:3001/api to see the API documentation
-
-## License
-
-UNLICENSED
+## 📖 Global Documentation
+For detailed system architecture and API specifications, see the [root documentation](../README.md).
