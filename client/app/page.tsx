@@ -89,7 +89,7 @@ export default function LandingPage() {
               <Sparkles className="h-6 w-6 transition-luxury hover:rotate-12" />
               <span>Verve</span>
             </div>
-            <p className="font-medium text-secondary text-base">© 2024 Verve. Crafting premium productivity.</p>
+            <p className="font-medium text-secondary text-base">© 2026 Verve. Crafting premium productivity.</p>
           </div>
         </div>
       </footer>
