@@ -19,11 +19,12 @@ export class MailerService implements OnModuleInit {
                 host: smtpHost,
                 port: parseInt(this.configService.get<string>('SMTP_PORT') || '587', 10),
                 secure: String(this.configService.get('SMTP_SECURE')) === 'true',
+                family: 4, // Force IPv4 to fix Render's ENETUNREACH IPv6 issue
                 auth: {
                     user: smtpUser,
                     pass: smtpPass,
                 },
-            });
+            } as any);
 
             // Verify connection configuration
             try {
