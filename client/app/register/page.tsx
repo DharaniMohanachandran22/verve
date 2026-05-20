@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
 import { ArrowRight, Mail, Lock, User as UserIcon, CheckCircle, Eye, EyeOff, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ import BrandLogo from '../../components/auth/BrandLogo';
 type Step = 'form' | 'verify' | 'success';
 
 
-export default function RegisterPage() {
+function RegisterContent() {
     const [step, setStep] = useState<Step>('form');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -463,5 +463,13 @@ export default function RegisterPage() {
                 </div>
             )}
         </div>
+    );
+}
+
+export default function RegisterPage() {
+    return (
+        <Suspense fallback={<div className="flex min-h-screen flex-col items-center justify-center bg-background noise p-6"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary/40 border-t-primary"></div></div>}>
+            <RegisterContent />
+        </Suspense>
     );
 }
