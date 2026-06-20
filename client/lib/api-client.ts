@@ -25,15 +25,18 @@ api.interceptors.response.use(
         const isAuthCheck = requestUrl.includes('/auth/me');
         const isRefresh = requestUrl.includes('/auth/refresh');
         const isLogout = requestUrl.includes('/auth/logout');
+        const isLogin = requestUrl.includes('/auth/login');
         const isInvitationPreview = requestUrl.includes('/invitations/') && requestUrl.includes('/preview');
 
-        // Don't retry refresh calls, auth checks, logout, invitation previews, or already-retried requests
+        // Don't retry refresh calls, auth checks, logout, login attempts, invitation previews, or already-retried requests.
+        // Login 401s carry real error messages (wrong password, unverified email) and must not be swallowed by the refresh flow.
         if (
             error.response?.status === 401 &&
             !originalRequest._retry &&
             !isRefresh &&
             !isAuthCheck &&
             !isLogout &&
+            !isLogin &&
             !isInvitationPreview
         ) {
             originalRequest._retry = true;

@@ -1,10 +1,9 @@
 import {
-  HttpException,
-  HttpStatus,
   UnauthorizedException,
   ForbiddenException,
   NotFoundException,
   BadRequestException,
+  ConflictException,
 } from '@nestjs/common';
 
 // Authentication Exceptions
@@ -14,13 +13,13 @@ export class InvalidCredentialsException extends UnauthorizedException {
   }
 }
 
-export class EmailNotFoundException extends BadRequestException {
+export class EmailNotFoundException extends UnauthorizedException {
   constructor() {
     super('Email does not exist');
   }
 }
 
-export class IncorrectPasswordException extends BadRequestException {
+export class IncorrectPasswordException extends UnauthorizedException {
   constructor() {
     super('Invalid or incorrect password');
   }
@@ -44,7 +43,7 @@ export class SamePasswordException extends BadRequestException {
   }
 }
 
-export class DuplicateEmailException extends BadRequestException {
+export class DuplicateEmailException extends ConflictException {
   constructor() {
     super('Email already exists');
   }

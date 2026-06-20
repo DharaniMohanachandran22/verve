@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 import { ListsService } from './lists.service';
@@ -80,6 +80,7 @@ export class ListsController {
     @UseGuards(PermissionGuard)
     @Roles([Role.Owner, Role.Editor])
     @Post('lists/:listId/restore')
+    @HttpCode(HttpStatus.OK)
     restoreList(@Param('listId') listId: string, @Req() req: Request) {
         return this.listsService.restoreList(listId, (req as any).user.userId);
     }
@@ -125,11 +126,14 @@ export class ListsController {
     // ── Owner only ───────────────────────────────────────────────────────────
 
     @ApiOperation({ summary: 'Permanently delete a list' })
-    @ApiResponse({ status: 200, description: 'List deleted' })
-    @ApiResponse({ status: 400, description: 'Bad request' })
+    @ApiResponse({ status: 204, description: 'List deleted' })
+    @ApiResponse({ status: 401, description: 'Unauthorized' })
+    @ApiResponse({ status: 403, description: 'Forbidden' })
+    @ApiResponse({ status: 404, description: 'List not found' })
     @UseGuards(PermissionGuard)
     @Roles([Role.Owner])
     @Delete('lists/:listId')
+    @HttpCode(HttpStatus.NO_CONTENT)
     deleteList(@Param('listId') listId: string, @Req() req: Request) {
         return this.listsService.deleteList(listId, (req as any).user.userId);
     }

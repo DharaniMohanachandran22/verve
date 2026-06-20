@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import type { Request } from 'express';
 import { CardsService } from './cards.service';
@@ -117,6 +117,7 @@ export class CardsController {
     @ApiResponse({ status: 400, description: 'Bad request' })
     @LogActivity(ActionType.RESTORE, EntityType.CARD)
     @Post('cards/:cardId/restore')
+    @HttpCode(HttpStatus.OK)
     restoreCard(@Param('cardId') cardId: string, @Req() req: Request) {
         const userId = (req as any).user.userId;
         return this.cardsService.restoreCard(cardId, userId);
@@ -191,10 +192,12 @@ export class CardsController {
     }
 
     @ApiOperation({ summary: 'Permanently delete a card' })
-    @ApiResponse({ status: 200, description: 'Card deleted' })
-    @ApiResponse({ status: 400, description: 'Bad request' })
+    @ApiResponse({ status: 204, description: 'Card deleted' })
+    @ApiResponse({ status: 401, description: 'Unauthorized' })
+    @ApiResponse({ status: 404, description: 'Card not found' })
     @LogActivity(ActionType.DELETE, EntityType.CARD)
     @Delete('cards/:cardId')
+    @HttpCode(HttpStatus.NO_CONTENT)
     deleteCard(@Param('cardId') cardId: string, @Req() req: Request) {
         const userId = (req as any).user.userId;
         return this.cardsService.deleteCard(cardId, userId);
