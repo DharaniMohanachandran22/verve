@@ -12,8 +12,9 @@ import { Public } from './decorators/public.decorator';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { UsersService } from '../users/users.service';
 
-// sameSite must be 'lax' in dev (cross-port localhost) and 'strict' in production
-const COOKIE_SAME_SITE: 'strict' | 'lax' = process.env.NODE_ENV === 'production' ? 'strict' : 'lax';
+// SameSite=None is required for cross-origin cookie sending (Vercel → Render).
+// SameSite=Strict/Lax causes browsers to silently drop cookies on cross-site requests.
+const COOKIE_SAME_SITE: 'none' | 'lax' = process.env.NODE_ENV === 'production' ? 'none' : 'lax';
 
 function cookieOptions(maxAge: number) {
     return {
