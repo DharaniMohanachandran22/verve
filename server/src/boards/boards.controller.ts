@@ -115,6 +115,7 @@ export class BoardsController {
   @Roles([Role.Owner])
   @LogActivity(ActionType.RESTORE, EntityType.BOARD)
   @Post(':boardId/restore')
+  @HttpCode(HttpStatus.OK)
   restoreBoard(@Param('boardId') boardId: string) {
     return this.boardsService.restoreBoard(boardId);
   }
@@ -177,6 +178,7 @@ export class BoardsController {
   @ApiResponse({ status: 404, description: 'Invitation not found or expired' })
   @UseGuards(AuthGuard)
   @Post('invitations/:token/accept')
+  @HttpCode(HttpStatus.OK)
   acceptInvitation(@Param('token') token: string, @Req() req: Request) {
     const userId = (req as any).user.userId;
     return this.boardsService.acceptInvitation(token, userId);
@@ -303,6 +305,7 @@ export class BoardsController {
   @ApiResponse({ status: 404, description: 'Invalid or expired share token' })
   @UseGuards(AuthGuard)
   @Post('join/:token')
+  @HttpCode(HttpStatus.OK)
   joinViaShareLink(@Param('token') token: string, @Req() req: Request) {
     const userId = (req as any).user.userId;
     return this.boardsService.joinViaShareLink(token, userId);

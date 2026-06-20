@@ -22,8 +22,9 @@ export class UsersController {
 
     @ApiOperation({ summary: 'Get user details by ID' })
     @ApiResponse({ status: 200, description: 'User data' })
-    @ApiResponse({ status: 400, description: 'Bad request' })
+    @ApiResponse({ status: 401, description: 'Unauthorized' })
     @ApiResponse({ status: 404, description: 'User not found' })
+    @UseGuards(AuthGuard)
     @Get(':userId')
     async getUser(@Param('userId', ParseObjectIdPipe) userId: string) {
         const user = await this.usersService.findById(userId);

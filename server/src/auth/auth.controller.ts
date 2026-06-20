@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Res, Req, UnauthorizedException } from '@nestjs/common';
+import { Controller, Post, Body, Get, Res, Req, UnauthorizedException, HttpCode, HttpStatus } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -47,10 +47,12 @@ export class AuthController {
 
     @Public()
     @Post('register')
+    @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'Register a new user' })
     @ApiBody({ type: RegisterDto })
-    @ApiResponse({ status: 200, description: 'User registered successfully. Verification email sent.' })
+    @ApiResponse({ status: 201, description: 'User registered successfully. Verification email sent.' })
     @ApiResponse({ status: 400, description: 'Bad request' })
+    @ApiResponse({ status: 409, description: 'Email already exists' })
     async register(@Body() registerDto: RegisterDto) {
         const user = await this.authService.register(registerDto);
         const userResponse = user.toObject();
@@ -68,10 +70,11 @@ export class AuthController {
 
     @Public()
     @Post('login')
+    @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Login with email and password' })
     @ApiBody({ type: LoginDto })
     @ApiResponse({ status: 200, description: 'Login successful' })
-    @ApiResponse({ status: 400, description: 'Bad request' })
+    @ApiResponse({ status: 400, description: 'Validation error' })
     @ApiResponse({ status: 401, description: 'Invalid credentials or email not verified' })
     async login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
         const { user, accessToken, refreshToken } = await this.authService.login(loginDto);
@@ -84,10 +87,10 @@ export class AuthController {
 
     @Public()
     @Post('refresh')
+    @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Refresh access token' })
     @ApiResponse({ status: 200, description: 'Tokens refreshed successfully' })
-    @ApiResponse({ status: 400, description: 'Bad request' })
-    @ApiResponse({ status: 401, description: 'Invalid refresh token' })
+    @ApiResponse({ status: 401, description: 'Invalid or missing refresh token' })
     async refresh(@Body() body: { refreshToken?: string }, @Res({ passthrough: true }) res: Response) {
         const refreshToken = body.refreshToken || (res.req as any).cookies?.refresh_token;
 
@@ -105,6 +108,7 @@ export class AuthController {
 
     @Public()
     @Post('verify-otp')
+    @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Verify registration OTP' })
     @ApiBody({ type: VerifyOtpDto })
     @ApiResponse({ status: 200, description: 'Email verified successfully' })
@@ -120,10 +124,12 @@ export class AuthController {
 
     @Public()
     @Post('resend-otp')
+    @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Resend registration OTP' })
     @ApiBody({ type: ResendOtpDto })
     @ApiResponse({ status: 200, description: 'OTP resent successfully' })
     @ApiResponse({ status: 400, description: 'Bad request' })
+    @ApiResponse({ status: 404, description: 'User not found' })
     async resendOtp(@Body() body: ResendOtpDto) {
         await this.authService.resendOtp(body.email);
         return { success: true, message: 'Verification code resent successfully', data: null };
@@ -131,10 +137,11 @@ export class AuthController {
 
     @Public()
     @Post('forgot-password')
+    @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Request password reset OTP' })
     @ApiBody({ type: ForgotPasswordDto })
     @ApiResponse({ status: 200, description: 'If account exists, OTP sent' })
-    @ApiResponse({ status: 400, description: 'Bad request' })
+    @ApiResponse({ status: 400, description: 'Validation error' })
     async forgotPassword(@Body() body: ForgotPasswordDto) {
         await this.authService.forgotPassword(body.email);
         return { success: true, message: 'If your account exists, a security code has been sent.', data: null };
@@ -142,6 +149,7 @@ export class AuthController {
 
     @Public()
     @Post('validate-otp')
+    @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Validate OTP without side effects' })
     @ApiResponse({ status: 200, description: 'OTP is valid' })
     @ApiResponse({ status: 400, description: 'Invalid or expired OTP' })
@@ -152,6 +160,7 @@ export class AuthController {
 
     @Public()
     @Post('reset-password')
+    @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Reset password with OTP' })
     @ApiBody({ type: ResetPasswordDto })
     @ApiResponse({ status: 200, description: 'Password reset successful' })
@@ -163,9 +172,9 @@ export class AuthController {
 
     @Public()
     @Post('logout')
+    @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'Logout current user' })
     @ApiResponse({ status: 200, description: 'Logged out successfully' })
-    @ApiResponse({ status: 400, description: 'Bad request' })
     async logout(@Res({ passthrough: true }) res: Response, @Req() req: Request) {
         console.log('Logout requested. Cookies received:', req.cookies);
         const refreshToken = req.cookies?.refresh_token || req.cookies?.['user-refresh-token'];

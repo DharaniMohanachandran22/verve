@@ -58,9 +58,11 @@ export class ChecklistsController {
     }
 
     @ApiOperation({ summary: 'Delete a checklist item' })
-    @ApiResponse({ status: 200, description: 'Item deleted' })
-    @ApiResponse({ status: 400, description: 'Bad request' })
+    @ApiResponse({ status: 204, description: 'Item deleted' })
+    @ApiResponse({ status: 401, description: 'Unauthorized' })
+    @ApiResponse({ status: 404, description: 'Checklist or item not found' })
     @Delete('checklists/:checklistId/items/:itemId')
+    @HttpCode(HttpStatus.NO_CONTENT)
     deleteItem(
         @Param('checklistId') checklistId: string,
         @Param('itemId') itemId: string,
