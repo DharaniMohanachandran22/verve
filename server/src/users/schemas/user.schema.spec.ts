@@ -10,7 +10,7 @@ describe('User Schema', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        MongooseModule.forRoot('mongodb://localhost:27017/trello-test'),
+        MongooseModule.forRoot('mongodb://localhost:27017/verve-test'),
         MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
       ],
     }).compile();
