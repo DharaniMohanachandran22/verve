@@ -11,21 +11,14 @@ dns.setDefaultResultOrder('ipv4first');
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Enable CORS for frontend integration.
-  // The origin function allows the configured FRONTEND_URL plus any Vercel preview
-  // deployment for the same project, so all preview and production URLs work.
-  const allowedOrigin = process.env.FRONTEND_URL || '';
+  // Enable CORS for the exact frontend origin configured via FRONTEND_URL.
+  // Only that specific origin is allowed — no wildcard or preview URL matching.
+  const allowedOrigin = process.env.FRONTEND_URL;
+  if (!allowedOrigin) {
+    throw new Error('FRONTEND_URL environment variable is not set');
+  }
   app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      const isConfigured = allowedOrigin && origin === allowedOrigin;
-      const isVercelPreview = /^https:\/\/verve(-[a-z0-9]+-dharanimohanachandran22s-projects)?\.vercel\.app$/.test(origin);
-      if (isConfigured || isVercelPreview) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS: origin ${origin} not allowed`));
-      }
-    },
+    origin: allowedOrigin,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -55,8 +48,8 @@ async function bootstrap() {
 
   // Swagger API documentation
   const config = new DocumentBuilder()
-    .setTitle('Trello Ticket System API')
-    .setDescription('REST API for Trello-like ticket management system with role-based access control')
+    .setTitle('Verve System API')
+    .setDescription('REST API for ticket management system with role-based access control')
     .setVersion('1.0')
     .addCookieAuth('auth_token')
     .build();

@@ -23,7 +23,7 @@ import { SearchModule } from './search/search.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost:27017/trello'),
+    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost:27017/verve'),
     CommonModule,
     AuthModule,
     BoardsModule,
